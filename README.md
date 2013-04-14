@@ -5,34 +5,37 @@ This module implements ability to catch subdomains on class "Request" and set ro
 
 ## How to use:
 ### Requeriment
+
 **Set base_url using absolute value in your bootstrap. Ex:**
 
+```php
 	Kohana::init(array(
 		'base_url'   => 'http://your_domain.com/',
 	));
-
+```
 
 ### Use
+
 **catch actual sub-domain**
 
-`echo Request::$subdomain;`
-	
-**Set defaults subdomains to routes. Ex:**
+```php
+echo Request::current()->subdomain;
+```
 
-	// Default value is array(Route::SUBDOMAIN_EMPTY, 'www'); Route::SUBDOMAIN_EMPTY = if not having subdomain
-	Routes::$default_subdomains = array('','www');
-	
 **Set Route to default subdomain. Ex:**
 
+```php
 	// if use address "your-domain.com" or "www.your-domain.com", this route is valid.
 	Route::set('subdomain', '(<controller>(/<action>(/<id>)))')
 		->defaults(array(
 			'controller' => 'welcome',
 			'action'     => 'index',
-		));	
+		));
+```
 
 **Set Route by specifically subdomain. Ex:**
 
+```php
 	// if use address "test.your-domain.com", this route is valid.
 	Route::set('subdomain', '(<controller>(/<action>(/<id>)))')
         ->subdomains(array('test'))
@@ -40,21 +43,24 @@ This module implements ability to catch subdomains on class "Request" and set ro
 			'controller' => 'test',
 			'action'     => 'index',
 		));
-		
+```
+
 **Set Route for all subdomains (wildcard). Ex:**
 
+```php
 	// you can use any sub-domain to execute this route.
 	Route::set('subdomain', '(<controller>(/<action>(/<id>)))')
-        ->subdomains(array(Route::SUBDOMAIN_WILDCARD))
+        ->subdomains(array(Route::SUBDOMAIN_WILDCARD), true)
 		->defaults(array(
 			'controller' => 'test',
 			'action'     => 'wildcard',
 		));
-
+```
 
 ### Complete bootstrap example
 
-	<?php defined('SYSPATH') or die('No direct script access.');
+```php
+<?php defined('SYSPATH') or die('No direct script access.');
 
 	// -- Environment setup --------------------------------------------------------
 
@@ -168,31 +174,30 @@ This module implements ability to catch subdomains on class "Request" and set ro
 	 * Set the routes. Each route must have a minimum of a name, a URI and a set of
 	 * defaults for the URI.
 	 */
-	 
-	Route::$default_subdomains = array(Route::SUBDOMAIN_EMPTY, 'www');
 
 	Route::set('default', '(<controller>(/<action>(/<id>)))')
 		->defaults(array(
 			'controller' => 'welcome',
 			'action'     => 'index',
 		));
-	 
+
 	Route::set('subdomain1', '(<controller>(/<action>(/<id>)))')
         ->subdomains(array('test','test2'))
 		->defaults(array(
 			'controller' => 'test',
 			'action'     => 'index',
 		));
-		
+
 	Route::set('subdomain2', '(<controller>(/<action>(/<id>)))')
-        ->subdomains(array(Route::SUBDOMAIN_WILDCARD))
+        ->subdomains(array(Route::SUBDOMAIN_WILDCARD), true)
 		->defaults(array(
 			'controller' => 'test',
 			'action'     => 'wildcard',
-		));	
+		));
+```
 
 Sugestions? jean@pixeldev.com.br
 
-[]'s 
+[]'s
 
 :)
